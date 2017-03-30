@@ -1,5 +1,8 @@
 package pl.kalisz.kamil.resultstatehandler;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Copyright (C) 2016 Kamil Kalisz.
  * <p>
@@ -15,13 +18,39 @@ package pl.kalisz.kamil.resultstatehandler;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class TestResult
+public class TestResult implements Parcelable
 {
     private String value;
 
     public TestResult(String value) {
         this.value = value;
     }
+
+    protected TestResult(Parcel in) {
+        value = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(value);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<TestResult> CREATOR = new Creator<TestResult>() {
+        @Override
+        public TestResult createFromParcel(Parcel in) {
+            return new TestResult(in);
+        }
+
+        @Override
+        public TestResult[] newArray(int size) {
+            return new TestResult[size];
+        }
+    };
 
     @Override
     public boolean equals(Object o) {

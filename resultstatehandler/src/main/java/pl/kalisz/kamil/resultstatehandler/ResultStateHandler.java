@@ -25,9 +25,9 @@ import java.util.Map;
 
 /**
  *
- * @param <KEY_TYPE> typ klucza który wiąże ze sobą metody zwtotne z wynikami
- * @param <RESULT_TYPE> typ wyniku do propagacji MUSI BYĆ SERIALIZOWALNY LUB PARCELOWALNY
- * @param <CALLBACK_TYPE> typ metody zwrotnej
+ * @param <KEY_TYPE> type of key used to matching result with callback
+ * @param <RESULT_TYPE> type of result should be Parcelable or Serializable
+ * @param <CALLBACK_TYPE> type of callback method
  */
 public class ResultStateHandler<KEY_TYPE,RESULT_TYPE,CALLBACK_TYPE extends ResultStateCallback<RESULT_TYPE>>
 {
@@ -36,10 +36,10 @@ public class ResultStateHandler<KEY_TYPE,RESULT_TYPE,CALLBACK_TYPE extends Resul
     private boolean resumed;
 
     /**
-     *  rejestruje metode zwrotną, jeśli istnieje wynik dla tej metody
-     *  i aktualny stan pozwala na propagację wyniku wynik będzie zwrócony do <code>callback</code>
-     * @param key unikalny klucz dla danej metody musi pokrywac sie z kluczem wyniku
-     * @param callback metoda zwrotna
+     * register callback. If there is result for this callback
+     *  and state is resumed, result is returned to callback method
+     * @param key unique key for callback should be matched with result key
+     * @param callback callback method
      */
     public void registerCallback(@NonNull KEY_TYPE key, @NonNull CALLBACK_TYPE callback)
     {
@@ -51,10 +51,10 @@ public class ResultStateHandler<KEY_TYPE,RESULT_TYPE,CALLBACK_TYPE extends Resul
     }
 
     /**
-     *  rejestruje wartosc jeśli istnieje metoda zwrotna dla tej wartości
-     *  i aktualny stan pozwala na propagację wyniku wynik będzie zwrócony do metody zwrotnej
-     * @param key unikalny klucz dla wyniku metody musi pokrywac sie z kluczem metody zwrotnej
-     * @param result wynik do rozpropagowania
+     *  register value for return, if callback for key exists
+     *  and state is resumed, result is returned to callback method
+     * @param key unique key for result should be matched with callback key
+     * @param result result to propagate
      */
     public void returnResult(KEY_TYPE key, RESULT_TYPE result)
     {
@@ -70,9 +70,16 @@ public class ResultStateHandler<KEY_TYPE,RESULT_TYPE,CALLBACK_TYPE extends Resul
         callbacks.get(key).callBack(result2);
     }
 
+    /**
+     * resumes handler, in resume state handler can propagate results
+     */
     public void onResume()
     {
         resumed = true;
+        tryPropagatePendingResults();
+    }
+
+    private void tryPropagatePendingResults() {
         List<KEY_TYPE> savedResults = new ArrayList<>(pendingResults.keySet());
         for(KEY_TYPE key : savedResults)
         {
@@ -83,10 +90,28 @@ public class ResultStateHandler<KEY_TYPE,RESULT_TYPE,CALLBACK_TYPE extends Resul
         }
     }
 
-
+    /**
+     * pauses handler, in pause state handler can't propagate results
+     */
     public void onPause()
     {
         resumed = false;
     }
 
+    public PendingResultsState saveState()
+    {
+        return new PendingResultsState<KEY_TYPE,RESULT_TYPE>(pendingResults);
+    }
+
+    public void restoreState(PendingResultsState<KEY_TYPE,RESULT_TYPE> restoredResults)
+    {
+        if(restoredResults!=null)
+        {
+            //TODO try propagate only restored results
+            pendingResults.putAll(restoredResults.pendingResults);
+            if(resumed) {
+                tryPropagatePendingResults();
+            }
+        }
+    }
 }

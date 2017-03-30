@@ -19,9 +19,7 @@ import android.support.annotation.NonNull;
  */
 
 /**
- * interfejs umożliwiający obsługę generycznego zwracania wyników
- * w wypadku metod zwrotnych posiadających różne typy oraz ilości
- * parametrów nie jesteśmy w stanie wywołać.
+ * interface for generic handling results propagation.
  *
  * public class CustomData
  * {
