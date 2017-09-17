@@ -1,1 +1,1 @@
-include ':statesaver', ':resultstatehandler', ':app'
+include ':statesaver', ':resultstatehandler', ':windowmanager', ':app'
