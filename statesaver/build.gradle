@@ -1,17 +1,15 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.3"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 24
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionName rootProject.ext.projectVersion
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         archivesBaseName = 'state-saver'
-        versionCode 1
-        versionName "0.1.0-SNAPSHOT"
-
     }
     buildTypes {
         debug {
@@ -51,10 +49,12 @@ artifacts {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'org.slf4j:slf4j-api:1.7.18'
-    compile 'com.android.support:support-annotations:24.2.1'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    androidTestCompile 'com.android.support.test:runner:0.5'
+    compile "org.slf4j:slf4j-api:$rootProject.ext.slf4jVersion"
+    androidTestCompile "com.android.support.test:runner:$rootProject.ext.junitRunnerVersion"
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoCoreVersion", {
+        exclude group: 'com.android.support'
+    })
+    testCompile "junit:junit:$rootProject.ext.junitVersion"
 }
 
 connectedCheck << {

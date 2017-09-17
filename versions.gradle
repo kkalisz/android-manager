@@ -1,0 +1,14 @@
+allprojects{
+    ext {
+        compileSdkVersion = "android-26"
+        buildToolsVersion = "26.0.1"
+        targetSdkVersion = "O"
+        minSdkVersion = "14"
+        projectVersion = "0.1.0"
+        supportVersion = "26.0.0"
+        junitVersion = "4.12"
+        junitRunnerVersion = "1.0.1"
+        espressoCoreVersion = "3.0.1"
+        slf4jVersion = "1.7.25"
+    }
+}
