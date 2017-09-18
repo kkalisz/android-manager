@@ -50,6 +50,8 @@ artifacts {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile "org.slf4j:slf4j-api:$rootProject.ext.slf4jVersion"
+    compile "com.android.support:support-annotations:$rootProject.ext.supportVersion"
+
     androidTestCompile "com.android.support.test:runner:$rootProject.ext.junitRunnerVersion"
     androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoCoreVersion", {
         exclude group: 'com.android.support'
