@@ -2,6 +2,7 @@ package pl.kalisz.kamil.statesaver;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.io.Serializable;
@@ -25,16 +26,10 @@ import java.util.Map;
  */
 public class StateSaver implements StateHolder<Bundle>
 {
+    @NonNull
     private Map<String,StateHolder> registeredStateHolders = new HashMap<>();
+    @NonNull
     private Map<String,Object> restoredStates = new HashMap<>();
-
-    public void restoreState(Bundle bundle)
-    {
-        for(String tag : registeredStateHolders.keySet())
-        {
-            tryRestoreState(tag,registeredStateHolders.get(tag));
-        }
-    }
 
     public void registerStateHolder(String tag, StateHolder stateHolder)
     {
