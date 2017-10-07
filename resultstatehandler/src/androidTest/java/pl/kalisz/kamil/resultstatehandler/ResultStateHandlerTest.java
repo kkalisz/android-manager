@@ -1,8 +1,13 @@
 package pl.kalisz.kamil.resultstatehandler;
 
+import android.arch.lifecycle.Lifecycle;
+
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import pl.kalisz.kamil.statesaver.StateSaver;
 
 /**
  * Copyright (C) 2016 Kamil Kalisz.
@@ -23,122 +28,117 @@ public class ResultStateHandlerTest
 {
 
     private static final String TEST_KEY = "TEST_KEY";
-    public static final String TEST_VALUE = "TEST";
+    private static final String TEST_VALUE = "TEST";
+
+    TestLifecycleOwner testLifecycleOwner ;
+    StateSaver stateSaver;
+    TestResultHandler stateHandler;
+
+    @Before
+    public void before()
+    {
+        testLifecycleOwner = new TestLifecycleOwner();
+        stateSaver = new StateSaver();
+        stateHandler = new TestResultHandler(testLifecycleOwner.getLifecycle(),stateSaver);
+    }
+
 
     @Test
     public void whenRegisterResultAndThereIsNoCallbackResultIsNotPropagated()
     {
-        ResultStateHandler<String,Object,ResultStateCallback<Object>> stateHandler =new ResultStateHandler<>();
-
         TestResult testResult = new TestResult("TEST");
         stateHandler.returnResult(TEST_KEY,testResult);
-
     }
 
     @Test
     public void whenHandlerIsResumedRegisterResultAndThereIsCallbackResultIsPropagated()
     {
-        ResultStateHandler<String,TestResult,ResultStateCallback<TestResult>> stateHandler =new ResultStateHandler<>();
-        stateHandler.onResume();
+        testLifecycleOwner.getLifecycleRegistry().handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
 
         TestResult testResult = new TestResult("TEST");
         stateHandler.returnResult(TEST_KEY,testResult);
-        ValueHandler<TestResult> testResultValueHandler = new ValueHandler<>();
-        TestCallback testCallback = new TestCallback(testResultValueHandler);
+        TestCallback testCallback = new TestCallback();
         stateHandler.registerCallback(TEST_KEY,testCallback);
 
-        Assert.assertEquals(1,testResultValueHandler.getHits());
-        Assert.assertEquals(testResult,testResultValueHandler.getLastValue());
+        Assert.assertEquals(1,testCallback.getValueHandler().getHits());
+        Assert.assertEquals(testResult,testCallback.getValueHandler().getLastValue());
 
     }
 
     @Test
     public void whenHandlerIsResumedRegisterCallbackAndThereIsResultResultIsPropagated()
     {
-        ResultStateHandler<String,TestResult,ResultStateCallback<TestResult>> stateHandler =new ResultStateHandler<>();
-        stateHandler.onResume();
-        ValueHandler<TestResult> testResultValueHandler = new ValueHandler<>();
-        TestCallback testCallback = new TestCallback(testResultValueHandler);
+        testLifecycleOwner.getLifecycleRegistry().handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
+        TestCallback testCallback = new TestCallback();
 
         stateHandler.registerCallback(TEST_KEY,testCallback);
-        Assert.assertEquals(0,testResultValueHandler.getHits());
+        Assert.assertEquals(0,testCallback.getValueHandler().getHits());
         TestResult testResult = new TestResult(TEST_VALUE);
         stateHandler.returnResult(TEST_KEY,testResult);
 
-        Assert.assertEquals(1,testResultValueHandler.getHits());
-        Assert.assertEquals(testResult,testResultValueHandler.getLastValue());
+        Assert.assertEquals(1,testCallback.getValueHandler().getHits());
+        Assert.assertEquals(testResult,testCallback.getValueHandler().getLastValue());
     }
 
     @Test
     public void whenHandlerIsResumedRegisterCallbackAndThereIsNoResultResultIsNotPropagated()
     {
-        ResultStateHandler<String,TestResult,ResultStateCallback<TestResult>> stateHandler =new ResultStateHandler<>();
-        stateHandler.onResume();
-        ValueHandler<TestResult> testResultValueHandler = new ValueHandler<>();
-        TestCallback testCallback = new TestCallback(testResultValueHandler);
+        testLifecycleOwner.getLifecycleRegistry().handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
+        TestCallback testCallback = new TestCallback();
 
         stateHandler.registerCallback(TEST_KEY,testCallback);
-        Assert.assertEquals(0,testResultValueHandler.getHits());
+        Assert.assertEquals(0,testCallback.getValueHandler().getHits());
     }
 
     @Test
     public void whenHandlerIsNoResumedRegisterResultAndThereIsCallbackNoResultIsPropagated()
     {
-        ResultStateHandler<String,TestResult,ResultStateCallback<TestResult>> stateHandler =new ResultStateHandler<>();
-
         TestResult testResult = new TestResult("TEST");
         stateHandler.returnResult(TEST_KEY,testResult);
 
-        ValueHandler<TestResult> testResultValueHandler = new ValueHandler<>();
-        TestCallback testCallback = new TestCallback(testResultValueHandler);
+        TestCallback testCallback = new TestCallback();
         stateHandler.registerCallback(TEST_KEY,testCallback);
 
-        Assert.assertEquals(0,testResultValueHandler.getHits());
+        Assert.assertEquals(0,testCallback.getValueHandler().getHits());
     }
 
     @Test
     public void whenHandlerIsNotResumedRegisterCallbackAndThereIsResultNoResultIsPropagated()
     {
-        ResultStateHandler<String,TestResult,ResultStateCallback<TestResult>> stateHandler =new ResultStateHandler<>();
-        ValueHandler<TestResult> testResultValueHandler = new ValueHandler<>();
-        TestCallback testCallback = new TestCallback(testResultValueHandler);
+        TestCallback testCallback = new TestCallback();
 
         stateHandler.registerCallback(TEST_KEY,testCallback);
-        Assert.assertEquals(0,testResultValueHandler.getHits());
+        Assert.assertEquals(0,testCallback.getValueHandler().getHits());
         TestResult testResult = new TestResult("TEST");
         stateHandler.returnResult(TEST_KEY,testResult);
 
-        Assert.assertEquals(0,testResultValueHandler.getHits());
+        Assert.assertEquals(0,testCallback.getValueHandler().getHits());
     }
 
     @Test
     public void whenHandlerIsNotResumedRegisterCallbackAndThereIsNoResultResultIsNotPropagated()
     {
-        ResultStateHandler<String,TestResult,ResultStateCallback<TestResult>> stateHandler =new ResultStateHandler<>();
-        ValueHandler<TestResult> testResultValueHandler = new ValueHandler<>();
-        TestCallback testCallback = new TestCallback(testResultValueHandler);
+        TestCallback testCallback = new TestCallback();
 
         stateHandler.registerCallback(TEST_KEY,testCallback);
-        Assert.assertEquals(0,testResultValueHandler.getHits());
+        Assert.assertEquals(0,testCallback.getValueHandler().getHits());
     }
 
     @Test
     public void whenHandlerIsNotResumedRegisterCallbackAndThereIsResultResultIsPropagatedAfterResume()
     {
-        ResultStateHandler<String,TestResult,ResultStateCallback<TestResult>> stateHandler = new ResultStateHandler<>();
-        ValueHandler<TestResult> testResultValueHandler = new ValueHandler<>();
-        TestCallback testCallback = new TestCallback(testResultValueHandler);
+        TestCallback testCallback = new TestCallback();
 
         stateHandler.registerCallback(TEST_KEY,testCallback);
-        Assert.assertEquals(0,testResultValueHandler.getHits());
+        Assert.assertEquals(0,testCallback.getValueHandler().getHits());
         TestResult testResult = new TestResult("TEST");
         stateHandler.returnResult(TEST_KEY,testResult);
 
-        Assert.assertEquals(0,testResultValueHandler.getHits());
+        Assert.assertEquals(0,testCallback.getValueHandler().getHits());
 
-        stateHandler.onResume();
+        testLifecycleOwner.getLifecycleRegistry().handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
 
-        Assert.assertEquals(1,testResultValueHandler.getHits());
-        Assert.assertEquals(testResult,testResultValueHandler.getLastValue());
+        Assert.assertEquals(1,testCallback.getValueHandler().getHits());
+        Assert.assertEquals(testResult,testCallback.getValueHandler().getLastValue());
     }
 }

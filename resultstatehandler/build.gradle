@@ -20,6 +20,10 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':statesaver')
+    compile "android.arch.lifecycle:runtime:$rootProject.ext.lifecycleVersion"
+    annotationProcessor "android.arch.lifecycle:compiler:$rootProject.ext.lifecycleAlphaVersion"
+
     androidTestCompile "com.android.support.test:runner:$rootProject.ext.junitRunnerVersion"
     androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoCoreVersion", {
         exclude group: 'com.android.support'

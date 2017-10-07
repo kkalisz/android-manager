@@ -1,6 +1,8 @@
 package pl.kalisz.kamil.resultstatehandler;
 
-import android.support.annotation.NonNull;
+import android.arch.lifecycle.Lifecycle;
+
+import pl.kalisz.kamil.statesaver.StateSaver;
 
 /**
  * Copyright (C) 2016 Kamil Kalisz.
@@ -17,20 +19,8 @@ import android.support.annotation.NonNull;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class TestCallback implements ResultStateCallback<TestResult>
-{
-    private ValueHandler valueHandler;
-
-    public TestCallback() {
-        this.valueHandler = new ValueHandler();
-    }
-
-    @Override
-    public void callBack(@NonNull TestResult result) {
-        valueHandler.addValue(result);
-    }
-
-    public ValueHandler getValueHandler() {
-        return valueHandler;
+public class TestResultHandler extends ResultStateHandler<String,TestResult,ResultStateCallback<TestResult>> {
+    public TestResultHandler(Lifecycle lifecycle, StateSaver stateSaver) {
+        super(lifecycle, stateSaver);
     }
 }

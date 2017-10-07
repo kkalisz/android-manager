@@ -1,6 +1,8 @@
 package pl.kalisz.kamil.resultstatehandler;
 
-import android.support.annotation.NonNull;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.LifecycleRegistry;
 
 /**
  * Copyright (C) 2016 Kamil Kalisz.
@@ -17,20 +19,16 @@ import android.support.annotation.NonNull;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class TestCallback implements ResultStateCallback<TestResult>
+public class TestLifecycleOwner implements LifecycleOwner
 {
-    private ValueHandler valueHandler;
-
-    public TestCallback() {
-        this.valueHandler = new ValueHandler();
-    }
+    private LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
 
     @Override
-    public void callBack(@NonNull TestResult result) {
-        valueHandler.addValue(result);
+    public Lifecycle getLifecycle() {
+        return lifecycleRegistry;
     }
 
-    public ValueHandler getValueHandler() {
-        return valueHandler;
+    public LifecycleRegistry getLifecycleRegistry() {
+        return lifecycleRegistry;
     }
 }

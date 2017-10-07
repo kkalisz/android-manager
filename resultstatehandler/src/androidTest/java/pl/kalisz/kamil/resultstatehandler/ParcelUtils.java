@@ -1,6 +1,9 @@
 package pl.kalisz.kamil.resultstatehandler;
 
-import android.support.annotation.NonNull;
+import android.os.Bundle;
+import android.os.Parcel;
+
+import pl.kalisz.kamil.statesaver.StateSaver;
 
 /**
  * Copyright (C) 2016 Kamil Kalisz.
@@ -17,20 +20,17 @@ import android.support.annotation.NonNull;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class TestCallback implements ResultStateCallback<TestResult>
+public class ParcelUtils
 {
-    private ValueHandler valueHandler;
-
-    public TestCallback() {
-        this.valueHandler = new ValueHandler();
+    public static Bundle saveAndRestoreBundle(Bundle bundleToSave)
+    {
+        bundleToSave.setClassLoader(StateSaver.class.getClassLoader());
+        Parcel parcel = Parcel.obtain();
+        bundleToSave.writeToParcel(parcel, 0);
+        parcel.setDataPosition(0);
+        Bundle restoreState = parcel.readBundle(StateSaver.class.getClassLoader());
+        parcel.recycle();
+        return restoreState;
     }
 
-    @Override
-    public void callBack(@NonNull TestResult result) {
-        valueHandler.addValue(result);
-    }
-
-    public ValueHandler getValueHandler() {
-        return valueHandler;
-    }
 }
