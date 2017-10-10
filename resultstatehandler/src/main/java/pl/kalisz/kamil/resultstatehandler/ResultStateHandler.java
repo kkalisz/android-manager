@@ -45,7 +45,6 @@ public class ResultStateHandler<KEY_TYPE,RESULT_TYPE,CALLBACK_TYPE extends Resul
         this(lifecycle,stateSaver,"RESULT_HANDLER_STATE");
     }
 
-
     public ResultStateHandler(@NonNull Lifecycle lifecycle, @NonNull StateSaver stateSaver, String saveStateTag) {
         this.lifecycle = lifecycle;
         lifecycle.addObserver(this);
@@ -80,7 +79,7 @@ public class ResultStateHandler<KEY_TYPE,RESULT_TYPE,CALLBACK_TYPE extends Resul
      * @param key unique key for result should be matched with callback key
      * @param result result to propagate
      */
-    void returnResult(@NonNull KEY_TYPE key, @Nullable RESULT_TYPE result)
+    public void returnResult(@NonNull KEY_TYPE key, @Nullable RESULT_TYPE result)
     {
         pendingResults.put(key,result);
         if(isAtLeastResumed() && callbacks.containsKey(key))
