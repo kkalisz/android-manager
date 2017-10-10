@@ -1,10 +1,13 @@
 package pl.kalisz.kamil.windowmanager;
 
+import android.arch.lifecycle.Lifecycle;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import pl.kalisz.kamil.resultstatehandler.ResultStateHandler;
+import pl.kalisz.kamil.statesaver.StateSaver;
 
 /**
  * Copyright (C) 2016 Kamil Kalisz.
@@ -23,28 +26,41 @@ import pl.kalisz.kamil.resultstatehandler.ResultStateHandler;
  */
 public class WindowManagerImpl implements WindowManager
 {
-    private ResultStateHandler<String,IntentResult,IntentResultCallback> resutlHandler;
-
+    private ResultStateHandler<Integer,IntentResult,IntentResultCallback> resultHandler;
     private ActivityStarter activityStarter;
+    private RequestCodeGenerator requestCodeGenerator;
 
-    @Override
-    public void registerIntentHandler(String key, IntentHandler intentHandler) {
-        resutlHandler.registerCallback(key,new IntentResultCallback(intentHandler));
+    public WindowManagerImpl(Lifecycle lifecycle, StateSaver stateSaver, ActivityStarter activityStarter) {
+        this.activityStarter = activityStarter;
+        StateSaver internalStateSaver = new StateSaver();
+        stateSaver.registerStateHolder("WindowManagerImpl", internalStateSaver);
+        resultHandler = new ResultStateHandler<>(lifecycle, internalStateSaver);
+        requestCodeGenerator = new RequestCodeGenerator(internalStateSaver);
     }
 
     @Override
-    public void startActivity(String key, Intent intent, Bundle options) {
-        this.activityStarter.startActivity(key,intent,options);
+    public void registerIntentHandler(@NonNull String key, @NonNull IntentHandler intentHandler) {
+        resultHandler.registerCallback(generateRequestCode(key),new IntentResultCallback(intentHandler));
     }
 
     @Override
-    public void startActivity(String key, Intent intent) {
+    public int generateRequestCode(@NonNull String key) {
+        return requestCodeGenerator.getRequestCode(key);
+    }
+
+    @Override
+    public void startActivity(@NonNull String key, @NonNull Intent intent, @Nullable Bundle options) {
+        activityStarter.startActivityForResult(generateRequestCode(key),intent,options);
+    }
+
+    @Override
+    public void startActivity(@NonNull String key, @NonNull Intent intent) {
         this.startActivity(key,intent,null);
     }
 
-    @Override
-    public int generateRequestCode(String key) {
-        return 0;
+    public void returnResult(int requestCode, int resultCode,@NonNull Intent resultData)
+    {
+        String tagFromRequestCode = requestCodeGenerator.getTagFromRequestCode(requestCode);
+        resultHandler.returnResult(requestCode,new IntentResult(tagFromRequestCode,resultCode,resultData));
     }
-
 }

@@ -19,7 +19,7 @@ import pl.kalisz.kamil.resultstatehandler.ResultStateCallback;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class IntentResultCallback implements ResultStateCallback<IntentResult> {
+class IntentResultCallback implements ResultStateCallback<IntentResult> {
 
     private IntentHandler intentHandler;
 
@@ -29,6 +29,6 @@ public class IntentResultCallback implements ResultStateCallback<IntentResult> {
 
     @Override
     public void callBack(@NonNull IntentResult result) {
-        intentHandler.onWindowResult(null,result.resultCode,result.resultData);
+        intentHandler.onWindowResult(result.getRequestCode(),result.getResultCode(),result.getResultData());
     }
 }

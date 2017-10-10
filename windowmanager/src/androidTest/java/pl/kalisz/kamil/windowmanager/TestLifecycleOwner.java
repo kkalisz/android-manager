@@ -1,10 +1,8 @@
 package pl.kalisz.kamil.windowmanager;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.LifecycleRegistry;
 
 /**
  * Copyright (C) 2016 Kamil Kalisz.
@@ -21,13 +19,16 @@ import android.support.v4.app.Fragment;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public interface WindowManager
+public class TestLifecycleOwner implements LifecycleOwner
 {
-    void registerIntentHandler(@NonNull String key, @NonNull IntentHandler intentHandler);
+    private LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
 
-    int generateRequestCode(@NonNull String key);
+    @Override
+    public Lifecycle getLifecycle() {
+        return lifecycleRegistry;
+    }
 
-    void startActivity(@NonNull String key, @NonNull Intent intent, @Nullable Bundle options);
-
-    void startActivity(@NonNull String key, @NonNull Intent intent);
+    public LifecycleRegistry getLifecycleRegistry() {
+        return lifecycleRegistry;
+    }
 }

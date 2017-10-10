@@ -21,10 +21,11 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "org.slf4j:slf4j-api:$rootProject.ext.slf4jVersion"
+    compile "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"
+    compile project(":resultstatehandler")
     androidTestCompile "com.android.support.test:runner:$rootProject.ext.junitRunnerVersion"
     androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoCoreVersion", {
         exclude group: 'com.android.support'
     })
     testCompile "junit:junit:$rootProject.ext.junitVersion"
-    compile "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"
 }

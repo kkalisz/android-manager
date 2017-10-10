@@ -1,6 +1,8 @@
 package pl.kalisz.kamil.windowmanager;
 
 import android.content.Intent;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 
 /**
@@ -18,8 +20,57 @@ import android.content.Intent;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class IntentResult
+class IntentResult implements Parcelable
 {
-    int resultCode;
-    Intent resultData;
+    public IntentResult(String requestCode, int resultCode, Intent resultData) {
+        this.requestCode = requestCode;
+        this.resultCode = resultCode;
+        this.resultData = resultData;
+    }
+
+    private String requestCode;
+    private int resultCode;
+    private Intent resultData;
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(requestCode);
+        dest.writeInt(this.resultCode);
+        dest.writeParcelable(this.resultData, flags);
+    }
+
+    protected IntentResult(Parcel in) {
+        this.requestCode = in.readString();
+        this.resultCode = in.readInt();
+        this.resultData = in.readParcelable(Intent.class.getClassLoader());
+    }
+
+    public static final Creator<IntentResult> CREATOR = new Creator<IntentResult>() {
+        @Override
+        public IntentResult createFromParcel(Parcel source) {
+            return new IntentResult(source);
+        }
+
+        @Override
+        public IntentResult[] newArray(int size) {
+            return new IntentResult[size];
+        }
+    };
+
+    public int getResultCode() {
+        return resultCode;
+    }
+
+    public Intent getResultData() {
+        return resultData;
+    }
+
+    public String getRequestCode() {
+        return requestCode;
+    }
 }

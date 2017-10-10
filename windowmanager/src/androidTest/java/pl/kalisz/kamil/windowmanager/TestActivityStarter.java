@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Copyright (C) 2016 Kamil Kalisz.
@@ -21,13 +23,17 @@ import android.support.v4.app.Fragment;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public interface WindowManager
+public class TestActivityStarter implements ActivityStarter
 {
-    void registerIntentHandler(@NonNull String key, @NonNull IntentHandler intentHandler);
+    private WindowManagerImpl windowManager;
 
-    int generateRequestCode(@NonNull String key);
+    public void setWindowManager(WindowManagerImpl windowManager) {
+        this.windowManager = windowManager;
+    }
 
-    void startActivity(@NonNull String key, @NonNull Intent intent, @Nullable Bundle options);
+    @Override
+    public void startActivityForResult(@NonNull int requestCode, @NonNull Intent intent, @Nullable Bundle options) {
+        windowManager.returnResult(requestCode,0,new Intent());
+    }
 
-    void startActivity(@NonNull String key, @NonNull Intent intent);
 }

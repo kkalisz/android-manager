@@ -2,6 +2,8 @@ package pl.kalisz.kamil.windowmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 /**
@@ -21,7 +23,5 @@ import android.support.v4.app.Fragment;
  */
 public interface ActivityStarter
 {
-    void startActivity(String key, Intent intent, Bundle options);
-
-    void startActivity(String key, Intent intent);
+    void startActivityForResult(@NonNull int requestCode,@NonNull Intent intent,@Nullable Bundle options);
 }
