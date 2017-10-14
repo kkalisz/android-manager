@@ -1,10 +1,11 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
-        applicationId "pl.kalisz.kamil.androidmanagers"
+        applicationId "pl.kalisz.kamil.sync"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionName rootProject.ext.projectVersion
@@ -20,10 +21,24 @@ android {
 }
 
 dependencies {
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile "com.android.support.test:runner:$rootProject.ext.junitRunnerVersion"
-    androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoCoreVersion", {
+    compile ("com.android.support:appcompat-v7:$rootProject.ext.supportVersion")
+    androidTestCompile ("com.android.support.test:runner:$rootProject.ext.junitRunnerVersion"){
         exclude group: 'com.android.support'
-    })
+    }
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoCoreVersion") {
+        exclude group: 'com.android.support'
+    }
     testCompile "junit:junit:$rootProject.ext.junitVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile project(":dialogmanager")
+    compile project(":permissionmanager")
+    compile project(":windowmanager")
+    compile project(":statesaver")
+
+
+}
+repositories {
+    mavenCentral()
 }

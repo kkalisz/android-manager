@@ -1,4 +1,4 @@
-package pl.kalisz.kamil.androidmanagers;
+package pl.kalisz.kamil.sync;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

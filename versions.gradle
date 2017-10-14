@@ -2,7 +2,7 @@ allprojects{
     ext {
         compileSdkVersion = "android-26"
         buildToolsVersion = "26.0.1"
-        targetSdkVersion = 25
+        targetSdkVersion = 26
         minSdkVersion = 14
         projectVersion = "0.1.0"
         supportVersion = "26.0.0"
@@ -12,5 +12,6 @@ allprojects{
         junitRunnerVersion = "1.0.1"
         espressoCoreVersion = "3.0.1"
         slf4jVersion = "1.7.25"
+        supportVersion = "26.1.0"
     }
 }

@@ -1,4 +1,4 @@
-package pl.kalisz.kamil.androidmanagers;
+package pl.kalisz.kamil.sync;
 
 import org.junit.Test;
 
