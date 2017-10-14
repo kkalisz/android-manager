@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AndroidManagers.iml" filepath="$PROJECT_DIR$/AndroidManagers.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dialogmanager/dialogmanager.iml" filepath="$PROJECT_DIR$/dialogmanager/dialogmanager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/permissionmanager/permissionmanager.iml" filepath="$PROJECT_DIR$/permissionmanager/permissionmanager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/resultstatehandler/resultstatehandler.iml" filepath="$PROJECT_DIR$/resultstatehandler/resultstatehandler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/statesaver/statesaver.iml" filepath="$PROJECT_DIR$/statesaver/statesaver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/windowmanager/windowmanager.iml" filepath="$PROJECT_DIR$/windowmanager/windowmanager.iml" />
+    </modules>
+  </component>
+</project>
