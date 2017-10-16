@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import pl.kalisz.kamil.resultstatehandler.ResultStateHandler;
+import pl.kalisz.kamil.resultstatehandler.ResultStateHandlerLifecycleImpl;
 import pl.kalisz.kamil.statesaver.StateSaver;
 
 /**
@@ -34,7 +35,7 @@ public class WindowManagerImpl implements WindowManager
         this.activityStarter = activityStarter;
         StateSaver internalStateSaver = new StateSaver();
         stateSaver.registerStateHolder("WindowManagerImpl", internalStateSaver);
-        resultHandler = new ResultStateHandler<>(lifecycle, internalStateSaver);
+        resultHandler = new ResultStateHandlerLifecycleImpl<>(lifecycle, internalStateSaver);
         requestCodeGenerator = new RequestCodeGenerator(internalStateSaver);
     }
 

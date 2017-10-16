@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import pl.kalisz.kamil.resultstatehandler.ResultStateHandler;
+import pl.kalisz.kamil.resultstatehandler.ResultStateHandlerLifecycleImpl;
 import pl.kalisz.kamil.statesaver.StateSaver;
 
 /**
@@ -31,7 +32,7 @@ public class DialogManagerImpl implements DialogManager
         this.dialogRequester = dialogRequester;
         StateSaver internalStateSaver = new StateSaver();
         stateSaver.registerStateHolder("DialogManagerImpl", internalStateSaver);
-        resultHandler = new ResultStateHandler<>(lifecycle, internalStateSaver);
+        resultHandler = new ResultStateHandlerLifecycleImpl<>(lifecycle, internalStateSaver);
     }
 
     @Override

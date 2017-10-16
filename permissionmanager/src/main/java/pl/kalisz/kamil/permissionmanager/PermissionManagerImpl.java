@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 import pl.kalisz.kamil.resultstatehandler.ResultStateHandler;
+import pl.kalisz.kamil.resultstatehandler.ResultStateHandlerLifecycleImpl;
 import pl.kalisz.kamil.statesaver.StateSaver;
 
 /**
@@ -33,7 +34,7 @@ public class PermissionManagerImpl implements PermissionManager
         this.permissionRequester = permissionRequester;
         StateSaver internalStateSaver = new StateSaver();
         stateSaver.registerStateHolder("PermissionManagerImpl", internalStateSaver);
-        resultHandler = new ResultStateHandler<>(lifecycle, internalStateSaver);
+        resultHandler = new ResultStateHandlerLifecycleImpl<>(lifecycle, internalStateSaver);
         requestCodeGenerator = new RequestCodeGenerator(internalStateSaver);
     }
 

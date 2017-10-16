@@ -36,20 +36,7 @@ import pl.kalisz.kamil.statesaver.StateSaver;
  * @param <RESULT_TYPE> type of result should be Parcelable or Serializable
  * @param <CALLBACK_TYPE> type of callback method
  */
-public class ResultStateHandler<KEY_TYPE,RESULT_TYPE,CALLBACK_TYPE extends ResultStateCallback<RESULT_TYPE>> implements LifecycleObserver, StateHolder<PendingResultsState<KEY_TYPE,RESULT_TYPE>> {
-    private Map<KEY_TYPE,CALLBACK_TYPE> callbacks = new HashMap<>();
-    private Map<KEY_TYPE,RESULT_TYPE> pendingResults = new HashMap<>();
-    private Lifecycle lifecycle;
-
-    public ResultStateHandler(@NonNull Lifecycle lifecycle, @NonNull StateSaver stateSaver) {
-        this(lifecycle,stateSaver,"RESULT_HANDLER_STATE");
-    }
-
-    public ResultStateHandler(@NonNull Lifecycle lifecycle, @NonNull StateSaver stateSaver, String saveStateTag) {
-        this.lifecycle = lifecycle;
-        lifecycle.addObserver(this);
-        stateSaver.registerStateHolder(saveStateTag,this);
-    }
+public interface ResultStateHandler<KEY_TYPE,RESULT_TYPE,CALLBACK_TYPE extends ResultStateCallback<RESULT_TYPE>> {
 
     /**
      * register callback. If there is result for this callback
@@ -57,21 +44,7 @@ public class ResultStateHandler<KEY_TYPE,RESULT_TYPE,CALLBACK_TYPE extends Resul
      * @param key unique key for callback should be matched with result key
      * @param callback callback method
      */
-    public void registerCallback(@NonNull KEY_TYPE key, @NonNull CALLBACK_TYPE callback)
-    {
-        callbacks.put(key,callback);
-        if(isAtLeastResumed() && pendingResults.containsKey(key))
-        {
-            returnResultInternal(key);
-        }
-    }
-
-    /**
-     * @return true if current {@link Lifecycle#getCurrentState()} state is at least {@link android.arch.lifecycle.Lifecycle.Event#ON_RESUME}
-     */
-    private boolean isAtLeastResumed() {
-        return lifecycle.getCurrentState().isAtLeast(Lifecycle.State.RESUMED);
-    }
+    void registerCallback(@NonNull KEY_TYPE key, @NonNull CALLBACK_TYPE callback);
 
     /**
      *  register value for return, if callback for key exists
@@ -79,61 +52,6 @@ public class ResultStateHandler<KEY_TYPE,RESULT_TYPE,CALLBACK_TYPE extends Resul
      * @param key unique key for result should be matched with callback key
      * @param result result to propagate
      */
-    public void returnResult(@NonNull KEY_TYPE key, @Nullable RESULT_TYPE result)
-    {
-        pendingResults.put(key,result);
-        if(isAtLeastResumed() && callbacks.containsKey(key))
-        {
-            returnResultInternal(key);
-        }
-    }
+    void returnResult(@NonNull KEY_TYPE key, @Nullable RESULT_TYPE result);
 
-    /**
-     * @param key for result to be returned
-     */
-    private void returnResultInternal(@Nullable KEY_TYPE key) {
-        RESULT_TYPE result2 = pendingResults.remove(key);
-        callbacks.get(key).callBack(result2);
-    }
-
-    /**
-     * resumes handler, in resume state handler can propagate results
-     */
-    @OnLifecycleEvent(value = Lifecycle.Event.ON_RESUME)
-    void onResume()
-    {
-        tryPropagatePendingResults();
-    }
-
-    /**
-     *  Method iterates through all pending results,
-     *  if there are callbacks for results they are propagated.
-     */
-    private void tryPropagatePendingResults() {
-        List<KEY_TYPE> savedResults = new ArrayList<>(pendingResults.keySet());
-        for(KEY_TYPE key : savedResults)
-        {
-            if(callbacks.containsKey(key))
-            {
-                returnResultInternal(key);
-            }
-        }
-    }
-
-    @Override
-    public PendingResultsState<KEY_TYPE, RESULT_TYPE> onSaveState() {
-        return new PendingResultsState<KEY_TYPE,RESULT_TYPE>(pendingResults);
-    }
-
-    @Override
-    public void onRestoreState(@Nullable PendingResultsState<KEY_TYPE, RESULT_TYPE> restoredState) {
-        if(restoredState!=null)
-        {
-            //TODO try propagate only restored results
-            pendingResults.putAll(restoredState.pendingResults);
-            if(isAtLeastResumed()) {
-                tryPropagatePendingResults();
-            }
-        }
-    }
 }
