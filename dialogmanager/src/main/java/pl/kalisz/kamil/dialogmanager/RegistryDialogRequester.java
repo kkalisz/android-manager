@@ -24,9 +24,9 @@ import java.util.HashMap;
  */
 public class RegistryDialogRequester implements DialogRequester
 {
-    public interface DialogFactory
+    public interface DialogFactory<DIALOG_DEFINITION extends DialogDefinition>
     {
-        DialogFragment createFragment(String requestCode,Context context);
+        DialogFragment createFragment(String requestCode,Context context, DIALOG_DEFINITION dialogDefinition);
     }
 
     private HashMap<Class<? extends DialogDefinition>,DialogFactory> dialogFactories = new HashMap<>();
@@ -46,7 +46,7 @@ public class RegistryDialogRequester implements DialogRequester
         {
             throw new IllegalStateException("TODO");
         }
-        DialogFragment dialogFragment = dialogFactory.createFragment(requestCode,context);
+        DialogFragment dialogFragment = dialogFactory.createFragment(requestCode,context, dialogDefinition );
         dialogFragment.show(fragmentManager,requestCode);
     }
 

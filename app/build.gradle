@@ -23,8 +23,9 @@ android {
 dependencies {
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile ("com.android.support:appcompat-v7:$rootProject.ext.supportVersion")
-    androidTestCompile ("com.android.support.test:runner:$rootProject.ext.junitRunnerVersion"){
+    compile("com.android.support:appcompat-v7:$rootProject.ext.supportVersion")
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    androidTestCompile("com.android.support.test:runner:$rootProject.ext.junitRunnerVersion") {
         exclude group: 'com.android.support'
     }
     androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoCoreVersion") {
@@ -32,6 +33,10 @@ dependencies {
     }
     testCompile "junit:junit:$rootProject.ext.junitVersion"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile "android.arch.lifecycle:extensions:$rootProject.ext.lifecycleAlphaVersion"
+    annotationProcessor "android.arch.lifecycle:compiler:$rootProject.ext.lifecycleAlphaVersion"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.19.1"
+
     compile project(":dialogmanager")
     compile project(":permissionmanager")
     compile project(":windowmanager")

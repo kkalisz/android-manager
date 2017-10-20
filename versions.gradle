@@ -5,9 +5,7 @@ allprojects{
         targetSdkVersion = 26
         minSdkVersion = 14
         projectVersion = "0.1.0"
-        supportVersion = "26.0.0"
-        lifecycleVersion = "1.0.0"
-        lifecycleAlphaVersion = "1.0.0-alpha8"
+        lifecycleAlphaVersion = "1.0.0-beta1"
         junitVersion = "4.12"
         junitRunnerVersion = "1.0.1"
         espressoCoreVersion = "3.0.1"
