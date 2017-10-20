@@ -48,6 +48,7 @@ public class ResultStateHandlerLifecycleImpl<KEY_TYPE, RESULT_TYPE, CALLBACK_TYP
     public ResultStateHandlerLifecycleImpl(@NonNull Lifecycle lifecycle, @NonNull StateSaver stateSaver, String saveStateTag) {
         super(stateSaver, saveStateTag);
         this.lifecycle = lifecycle;
+        lifecycle.addObserver(this);
     }
 
     public ResultStateHandlerLifecycleImpl(@NonNull Lifecycle lifecycle, @NonNull StateSaver stateSaver) {
