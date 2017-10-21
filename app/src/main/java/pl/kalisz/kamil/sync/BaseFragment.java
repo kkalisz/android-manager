@@ -6,9 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import pl.kalisz.kamil.dialogmanager.AlertDialogDefinition;
+import pl.kalisz.kamil.dialogmanager.AlertDialogFactory;
+import pl.kalisz.kamil.dialogmanager.AlertDialogFragment;
 import pl.kalisz.kamil.dialogmanager.DialogDefinition;
 import pl.kalisz.kamil.dialogmanager.DialogHandler;
 import pl.kalisz.kamil.dialogmanager.DialogRequester;
+import pl.kalisz.kamil.dialogmanager.DialogResult;
 import pl.kalisz.kamil.dialogmanager.RegistryDialogRequester;
 import pl.kalisz.kamil.permissionmanager.PermissionRequester;
 import pl.kalisz.kamil.statesaver.StateSaver;
@@ -31,7 +35,8 @@ import pl.kalisz.kamil.windowmanager.ActivityStarter;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class BaseFragment extends Fragment implements PermissionRequester, ActivityStarter, DialogHandler<Object> {
+public class BaseFragment extends Fragment implements PermissionRequester, ActivityStarter, DialogHandler<DialogResult> {
+    public static final String STATE_SAVE_STATE_TAG = "STATE_SAVE_STATE_TAG";
     protected WindowHelperImpl windowHelper;
     protected StateSaver stateSaver = new StateSaver();
     protected RegistryDialogRequester registryDialogRequester;
@@ -39,8 +44,11 @@ public class BaseFragment extends Fragment implements PermissionRequester, Activ
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        stateSaver.onRestoreState(savedInstanceState);
-        registryDialogRequester = new RegistryDialogRequester(getContext(),getFragmentManager());
+        if(savedInstanceState  != null) {
+            stateSaver.onRestoreState(savedInstanceState.getBundle(STATE_SAVE_STATE_TAG));
+        }
+        registryDialogRequester = new RegistryDialogRequester(getContext(),getChildFragmentManager());
+        registryDialogRequester.registerDialogFactory(AlertDialogDefinition.class, new AlertDialogFactory());
         windowHelper = new WindowHelperImpl(getLifecycle(),stateSaver,registryDialogRequester,this,this);
     }
 
@@ -55,8 +63,14 @@ public class BaseFragment extends Fragment implements PermissionRequester, Activ
     }
 
     @Override
-    public void onDialogResult(String requestCode, Object result) {
+    public void onDialogResult(String requestCode, DialogResult result) {
         windowHelper.getDialogManager().returnResult(requestCode,result);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBundle(STATE_SAVE_STATE_TAG,stateSaver.onSaveState());
     }
 
     @Override

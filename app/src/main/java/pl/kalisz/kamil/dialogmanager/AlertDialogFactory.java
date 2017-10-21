@@ -22,6 +22,6 @@ public class AlertDialogFactory implements RegistryDialogRequester.DialogFactory
 
     @Override
     public DialogFragment createFragment(String requestCode, Context context, AlertDialogDefinition dialogDefinition) {
-        return null;
+        return AlertDialogFragment.newInstance(dialogDefinition);
     }
 }

@@ -20,7 +20,7 @@ import android.os.Parcelable;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-class IntentResult implements Parcelable
+public class IntentResult implements Parcelable
 {
     public IntentResult(String requestCode, int resultCode, Intent resultData) {
         this.requestCode = requestCode;

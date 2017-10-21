@@ -1,0 +1,26 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:onClick="pickerFragment"
+        android:text="Contact Picker Fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <Button
+        android:onClick="pickerViewModel"
+        android:text="Contact Picker View Model"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:onClick="pickerCoroutineViewModel"
+        android:text="Contact Picker View Model Coroutines"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

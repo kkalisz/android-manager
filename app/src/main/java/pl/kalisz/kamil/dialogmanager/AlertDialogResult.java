@@ -1,4 +1,4 @@
-package pl.kalisz.kamil.sync.viewmodel;
+package pl.kalisz.kamil.dialogmanager;
 
 /**
  * Copyright (C) 2016 Kamil Kalisz.
@@ -15,10 +15,9 @@ package pl.kalisz.kamil.sync.viewmodel;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class ViewModelWindowManagerExposer
+public enum  AlertDialogResult
 {
-    public static ViewModelWindowHelper expose(BaseViewModel baseViewModel)
-    {
-        return baseViewModel.windowHelper;
-    }
+    POSITIVE,
+    NEGATIVE,
+    CANCEL
 }

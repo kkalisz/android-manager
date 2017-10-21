@@ -1,7 +1,5 @@
-package pl.kalisz.kamil.windowmanager;
+package pl.kalisz.kamil.statesaver;
 
-import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
@@ -19,7 +17,33 @@ import android.support.annotation.Nullable;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public interface  IntentHandler {
+public class SavedValue<TYPE> implements StateHolder<TYPE>{
 
-    void onWindowResult(@NonNull String requestCode, @NonNull int resultCode, @Nullable Intent resultData);
+    private TYPE value;
+
+    public SavedValue() {
+    }
+
+    public SavedValue(TYPE value) {
+        this.value = value;
+    }
+
+    @Nullable
+    @Override
+    public TYPE onSaveState() {
+        return value;
+    }
+
+    @Override
+    public void onRestoreState(@Nullable TYPE restoredState) {
+        value = restoredState;
+    }
+
+    public TYPE getValue() {
+        return value;
+    }
+
+    public void setValue(TYPE value) {
+        this.value = value;
+    }
 }

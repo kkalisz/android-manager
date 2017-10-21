@@ -46,7 +46,7 @@ public class DialogManagerImpl implements DialogManager
     }
 
 
-    public <DIALOG_RESULT, DIALOG_DEFINITION extends DialogDefinition<DIALOG_RESULT>> void returnResult(String requestCode, @Nullable DIALOG_RESULT dialogResult) {
-        resultHandler.returnResult(requestCode,new DialogResult(requestCode,dialogResult));
+    public <DIALOG_RESULT, DIALOG_DEFINITION extends DialogDefinition<DIALOG_RESULT>> void returnResult(String requestCode, @Nullable DialogResult<DIALOG_RESULT> dialogResult) {
+        resultHandler.returnResult(requestCode,dialogResult);
     }
 }

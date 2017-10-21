@@ -19,7 +19,7 @@ import pl.kalisz.kamil.sync.viewmodel.LiveDataManagerDelegate;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class ViewModelDialogManager extends LiveDataManagerDelegate<ViewModelDialogManager.DialogInfo,String,Object> implements DialogHandler, DialogManager{
+public class ViewModelDialogManager extends LiveDataManagerDelegate<ViewModelDialogManager.DialogInfo,String,DialogResult> implements DialogHandler, DialogManager{
 
     public class DialogInfo
     {
@@ -44,12 +44,12 @@ public class ViewModelDialogManager extends LiveDataManagerDelegate<ViewModelDia
 
     @Override
     public void onDialogResult(String requestCode, Object result) {
-        getResultStateHandler().returnResult(requestCode,result);
+        getResultStateHandler().returnResult(requestCode, new DialogResult(requestCode, result));
     }
 
     @Override
     public void registerDialogHandler(@NonNull String key, @NonNull DialogHandler dialogHandler) {
-        getResultStateHandler().returnResult(key,new DialogResultCallback(dialogHandler));
+        getResultStateHandler().registerCallback(key,new DialogResultCallback(dialogHandler));
     }
 
     @Override

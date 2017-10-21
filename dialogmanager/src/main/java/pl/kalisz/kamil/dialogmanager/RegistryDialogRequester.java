@@ -44,7 +44,7 @@ public class RegistryDialogRequester implements DialogRequester
         DialogFactory dialogFactory = dialogFactories.get(dialogDefinition.getClass());
         if(dialogFactory == null)
         {
-            throw new IllegalStateException("TODO");
+            throw new IllegalStateException("There is no dialog factory for: "+dialogDefinition.getClass());
         }
         DialogFragment dialogFragment = dialogFactory.createFragment(requestCode,context, dialogDefinition );
         dialogFragment.show(fragmentManager,requestCode);

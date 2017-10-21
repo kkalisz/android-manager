@@ -1,9 +1,9 @@
-package pl.kalisz.kamil.sync.viewmodel;
+package pl.kalisz.kamil.sync.sample;
 
-import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-import pl.kalisz.kamil.sync.WindowHelper;
+import pl.kalisz.kamil.sync.R;
 
 /**
  * Copyright (C) 2016 Kamil Kalisz.
@@ -20,17 +20,11 @@ import pl.kalisz.kamil.sync.WindowHelper;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class BaseViewModel extends AndroidViewModel
+public class VmActivity extends AppCompatActivity
 {
-    private ViewModelWindowHelper windowHelper;
-    public BaseViewModel(Application application) {
-        super(application);
-        windowHelper = new ViewModelWindowHelper();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
     }
-
-    public WindowHelper getWindowHelper()
-    {
-        return windowHelper;
-    }
-
 }

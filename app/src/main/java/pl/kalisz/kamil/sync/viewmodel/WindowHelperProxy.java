@@ -33,7 +33,7 @@ import pl.kalisz.kamil.windowmanager.ViewModelWindowManager;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class WindowHelperMediator
+public class WindowHelperProxy
 {
     public static void mediate(LifecycleOwner lifecycleOwner, final WindowHelper windowHelper, final ViewModelWindowHelper viewModelWindowHelper)
     {
