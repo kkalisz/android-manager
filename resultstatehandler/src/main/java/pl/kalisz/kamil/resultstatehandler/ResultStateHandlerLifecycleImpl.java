@@ -42,13 +42,14 @@ public class ResultStateHandlerLifecycleImpl<KEY_TYPE, RESULT_TYPE, CALLBACK_TYP
 
     @Override
     protected boolean canPropagateResults() {
-       return lifecycle.getCurrentState().isAtLeast(Lifecycle.State.RESUMED);
+       return lifecycle!= null && lifecycle.getCurrentState().isAtLeast(Lifecycle.State.RESUMED);
     }
 
     public ResultStateHandlerLifecycleImpl(@NonNull Lifecycle lifecycle, @NonNull StateSaver stateSaver, String saveStateTag) {
         super(stateSaver, saveStateTag);
         this.lifecycle = lifecycle;
         lifecycle.addObserver(this);
+        tryPropagatePendingResults();
     }
 
     public ResultStateHandlerLifecycleImpl(@NonNull Lifecycle lifecycle, @NonNull StateSaver stateSaver) {
