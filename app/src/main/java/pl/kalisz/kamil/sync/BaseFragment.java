@@ -5,19 +5,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
 import pl.kalisz.kamil.dialogmanager.AlertDialogDefinition;
 import pl.kalisz.kamil.dialogmanager.AlertDialogFactory;
-import pl.kalisz.kamil.dialogmanager.AlertDialogFragment;
-import pl.kalisz.kamil.dialogmanager.DialogDefinition;
 import pl.kalisz.kamil.dialogmanager.DialogHandler;
-import pl.kalisz.kamil.dialogmanager.DialogRequester;
 import pl.kalisz.kamil.dialogmanager.DialogResult;
 import pl.kalisz.kamil.dialogmanager.RegistryDialogRequester;
 import pl.kalisz.kamil.permissionmanager.PermissionRequester;
 import pl.kalisz.kamil.statesaver.StateSaver;
-import pl.kalisz.kamil.sync.WindowHelper;
-import pl.kalisz.kamil.sync.WindowHelperImpl;
 import pl.kalisz.kamil.windowmanager.ActivityStarter;
 
 /**
@@ -50,6 +46,8 @@ public class BaseFragment extends Fragment implements PermissionRequester, Activ
         registryDialogRequester = new RegistryDialogRequester(getContext(),getChildFragmentManager());
         registryDialogRequester.registerDialogFactory(AlertDialogDefinition.class, new AlertDialogFactory());
         windowHelper = new WindowHelperImpl(getLifecycle(),stateSaver,registryDialogRequester,this,this);
+        Toast.makeText(getActivity(),"new Creation",Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
