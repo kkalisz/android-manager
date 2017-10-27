@@ -14,7 +14,7 @@ import kotlin.coroutines.experimental.Continuation
 import kotlin.coroutines.experimental.suspendCoroutine
 
 /**
- * Copyright (C) 2016 Kamil Kalisz.
+ * Copyright (C) 2017 Kamil Kalisz.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

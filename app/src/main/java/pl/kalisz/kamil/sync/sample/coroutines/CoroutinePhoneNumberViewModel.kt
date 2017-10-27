@@ -12,7 +12,7 @@ import pl.kalisz.kamil.sync.extractPhoneFromResult
 import pl.kalisz.kamil.sync.sample.CoroutineViewModel
 
 /**
- * Copyright (C) 2016 Kamil Kalisz.
+ * Copyright (C) 2017 Kamil Kalisz.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
